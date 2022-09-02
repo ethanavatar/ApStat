@@ -23,11 +23,29 @@ keys xs = nub xs
 dotplot :: [Float] -> [(Key, Occurences)]
 dotplot xs = map (\x -> (x, count x xs)) $ keys xs
 
-plotOccurance :: Int -> [Char]
-plotOccurance n = replicate n '*'
+buildOccurance :: Int -> [Char]
+buildOccurance n = replicate n '*' ++ " " ++ show n
 
 plot :: [(Key, Occurences)] -> IO ()
-plot plt = putStrLn $ render $ vcat $ map (\(x,y) -> text (show x) <+> text (show $ plotOccurance y)) plt
+plot plt = putStrLn $ render $ vcat $ map (\(x,y) -> text (show x) <+> text (show $ buildOccurance y)) plt
+
+
+inp2 :: [Float]
+inp2 = [ 17, 28, 27, 14, 18, 34, 16, 42
+       , 28, 24, 20, 23, 31, 37, 21, 30
+       , 25, 17, 28, 33, 25, 23, 19, 18, 29 ]
+
+xs :: [Float]
+xs = [ 57, 61, 57, 57, 58, 57, 61, 54, 68, 51, 49, 64, 50, 48
+     , 65, 52, 56, 46, 54, 49, 51, 47, 55, 55, 54 ,42, 51, 56
+     , 55, 51, 54, 51, 60, 62, 43, 55, 56, 61, 52, 69, 64, 46 ]
+
+ans :: IO ()
+ans = plot $ dotplot $ sort xs
+
+
+ans2 :: IO()
+ans2 = plot $ dotplot $ sort inp2
 
 main :: IO ()
 main = undefined

@@ -1,31 +1,6 @@
 module Main where
 
-import Data.List
-
--- <library code>
-mean :: [Float] -> Float
-mean xs = sum xs / fromIntegral (length xs)
-
-median :: [Float] -> Float
-median xs =
-  let sorted = sort xs
-      n = length sorted
-      mid = n `div` 2
-  in if even n
-       then (sorted !! mid + sorted !! (mid - 1)) / 2
-       else sorted !! mid
-
-mode :: [Float] -> Maybe Float
-mode xs =
-  let counts = map (\x -> (x, length (filter (== x) xs))) xs
-      maxCount = maximum (map snd counts)
-  in if maxCount == 1
-       then Nothing
-       else Just (fst (head (filter ((== maxCount) . snd) counts)))
-
-midrange :: [Float] -> Float
-midrange xs = (minimum xs + maximum xs) / 2
--- </library code>
+import StatLib
 
 -- Finding measures of central tendency. In exercises 1-4 find the (a) mean, (b) median, (c) mode, and (d) midrange of the following data sets:
 
