@@ -3,13 +3,7 @@ module Main where
 import StatLib
 import Data.List
 
-meanOfFreqTable :: [((Float, Float), Float)] -> Float
--- sum fx / f
-meanOfFreqTable table = sumFx / sumF
-    where freqs = map (\(x, f) -> f) table
-          fx = map (\(x, f) -> fst x * f) table
-          sumFx = sum fx
-          sumF = sum freqs
+type FreqTable = [((Float, Float), Float)]
 
 nine :: [((Float, Float), Float)]
 nine = [ ((40, 49), 8)

@@ -3,7 +3,9 @@ module StatLib
 , mean, median, mode, range, midrange
 , popVariance, popStdDev
 , variance, stdDev
+
 , freqCls
+, meanOfFreqTable
 ) where
 
 import Data.List
@@ -106,6 +108,15 @@ parseToList = map read . words
 -- get the count of values that fall between l and u in xs
 freqCls :: [Float] -> Float -> Float -> Int
 freqCls xs l u = length $ filter (\x -> x >= l && x <= u) xs
+
+-- TODO: freqTable :: [Float] -> [(Float, Float, Int)]
+
+meanOfFreqTable :: [((Float, Float), Float)] -> Float
+meanOfFreqTable table = sumFx / sumF
+    where freqs = map (\(x, f) -> f) table
+          fx = map (\(x, f) -> fst x * f) table
+          sumFx = sum fx
+          sumF = sum freqs
 
 main :: IO ()
 main = undefined
