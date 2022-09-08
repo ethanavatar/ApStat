@@ -6,6 +6,7 @@ module StatLib
 
 , freqCls
 , meanOfFreqTable
+, meanOfFreqTableSums
 ) where
 
 import Data.List
@@ -114,7 +115,14 @@ freqCls xs l u = length $ filter (\x -> x >= l && x <= u) xs
 meanOfFreqTable :: [((Float, Float), Float)] -> Float
 meanOfFreqTable table = sumFx / sumF
     where freqs = map (\(x, f) -> f) table
-          fx = map (\(x, f) -> fst x * f) table
+          fx = map (\(x, f) ->  (mean [fst x, snd x] * f)) table
+          sumFx = sum fx
+          sumF = sum freqs
+
+meanOfFreqTableSums :: [((Float, Float), Float)] -> (Float, Float)
+meanOfFreqTableSums table = (sumFx, sumF)
+    where freqs = map (\(x, f) -> f) table
+          fx = map (\(x, f) ->  (mean [fst x, snd x] * f)) table
           sumFx = sum fx
           sumF = sum freqs
 
