@@ -7,6 +7,10 @@ module StatLib
 , freqCls
 , meanOfFreqTable
 , meanOfFreqTableSums
+
+, zScore
+, iqr
+, lsr
 ) where
 
 import Data.List
@@ -60,10 +64,6 @@ firstQuartile xs = median (take (length xs `div` 2) xs)
 thirdQuartile :: [Float] -> Float
 thirdQuartile xs = median (drop (length xs `div` 2) xs)
 
-zScore :: [Float] -> Float -> Float
-zScore xs x = (x - mean xs) / stdDev xs
-
-
 type Stem = Int
 type Leaf = Int
 
@@ -110,7 +110,8 @@ parseToList = map read . words
 freqCls :: [Float] -> Float -> Float -> Int
 freqCls xs l u = length $ filter (\x -> x >= l && x <= u) xs
 
--- TODO: freqTable :: [Float] -> [(Float, Float, Int)]
+freqTable :: [Float] -> Float -> [((Float, Float), Int)]
+freqTable xs clsWidth = map (\x -> ((x, x + clsWidth), freqCls xs x (x + clsWidth))) [0, clsWidth ..]
 
 meanOfFreqTable :: [((Float, Float), Float)] -> Float
 meanOfFreqTable table = sumFx / sumF
@@ -126,5 +127,18 @@ meanOfFreqTableSums table = (sumFx, sumF)
           sumFx = sum fx
           sumF = sum freqs
 
-main :: IO ()
-main = undefined
+zScore :: [Float] -> Float -> Float
+zScore xs x = (x - mean xs) / stdDev xs
+
+popZScore :: [Float] -> Float -> Float
+popZScore xs x = (x - mean xs) / popStdDev xs
+
+iqr :: [Float] -> Float
+iqr xs = thirdQuartile xs - firstQuartile xs
+
+-- least squares regression
+-- xs -> ys -> (m, b)
+lsr :: [Float] -> [Float] -> (Float, Float)
+lsr xs ys = (m, b)
+    where m = sum (zipWith (*) xs ys) / sum (map (^2) xs)
+          b = mean ys - m * mean xs
